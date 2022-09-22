@@ -101,7 +101,6 @@ export const getCourse = (val) => async (dispatch) => {
 export const getGroup = (course) => async (dispatch, getState) => {
     const inst = getState().login.myData.inst
     const group = await selectGroup(inst, course)
-    console.log(group)
     dispatch(loadGroup(group, course))
 }
 

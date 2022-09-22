@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getCourse, getGroup, getInstitute, saveGroup} from "../../redux/loginReducer";
 import {THEME} from "../../Theme";
 import {SelectModal} from "../Custom/SelectModal";
-import {getSchedule} from "../../redux/scheduleReducer";
+import {getCurrentWeek, getNextWeek} from "../../redux/scheduleReducer";
 
 
 export const StudentScreen = ({navigation}) => {
@@ -44,7 +44,8 @@ export const StudentScreen = ({navigation}) => {
             <SelectModal data={group} visible={openGroup} setVisible={setOpenGroup} setSelected={setSelectedGroup}
                          dispatchMethod={async (val) => {
                              dispatch(saveGroup(val))
-                            await dispatch(getSchedule(val))
+                            await dispatch(getCurrentWeek(val))
+                            await dispatch(getNextWeek(val))
                              navigation.navigate('Footer')
                          }}/>
         </View>
