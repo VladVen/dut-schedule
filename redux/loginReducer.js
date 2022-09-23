@@ -37,7 +37,8 @@ export const loginReducer = (state = initialState, action) => {
                 ...state,
                 selectData: {
                     ...state.selectData,
-                    course: action.payload
+                    course: action.payload,
+                    group: []
                 },
                 myData: {
                     ...state.myData,
@@ -64,6 +65,11 @@ export const loginReducer = (state = initialState, action) => {
                 myData: {
                     ...state.myData,
                     group: action.myData
+                },
+                selectData: {
+                    inst: [],
+                    course: [],
+                    group: []
                 }
             }
         }

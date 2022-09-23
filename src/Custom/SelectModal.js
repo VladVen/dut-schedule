@@ -7,12 +7,14 @@ export const SelectModal = ({visible, data, setSelected, dispatchMethod, setVisi
         <Modal visible={visible} animationType={'slide'} transparent={false}>
             <View style={styles.container}>
                 {
-                    data.map((item, index) => <Button title={item.name} key={index} color={THEME.textColor}
-                                                      onPress={async () => {
-                                                          setSelected(item.name)
-                                                          await dispatchMethod(item.value)
-                                                          setVisible(false)
-                                                      }}/>)
+                    data.map((item, index) => <View style={styles.margin}  key={index}>
+                        <Button title={item.name} color={THEME.textColor}
+                                onPress={async () => {
+                                    setSelected(item.name)
+                                    await dispatchMethod(item.value)
+                                    setVisible(false)
+                                }}/>
+                    </View>)
                 }
             </View>
         </Modal>
@@ -26,4 +28,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: THEME.background
     },
+    margin: {
+        marginBottom: 15,
+        marginHorizontal: 10
+    }
 })

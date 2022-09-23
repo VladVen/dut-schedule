@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     date: {
+        fontFamily: 'eUkraine',
         marginRight: 'auto',
         marginLeft: 'auto',
         color: THEME.textColor

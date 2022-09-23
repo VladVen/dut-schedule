@@ -9,7 +9,7 @@ export const Lesson = ({lesson, time}) => {
 
     return (
         <View style={styles.container}>
-            <Text style={{flex: 1, color: THEME.textColor}}>
+            <Text style={{flex: 1, color: THEME.textColor, fontSize: 13, fontFamily: 'eUkraine', marginLeft: 5}}>
                 {lesson.slice(0, lesson.length - 29)}
             </Text>
             <Text style={{
@@ -17,7 +17,8 @@ export const Lesson = ({lesson, time}) => {
                 marginRight: 'auto',
                 marginBottom: 10,
                 color: THEME.textColor,
-                fontSize: 18
+                fontSize: 18,
+                fontFamily: 'eUkraine'
             }}>
                 {time}
             </Text>

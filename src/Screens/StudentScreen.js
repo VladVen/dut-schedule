@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {getCourse, getGroup, getInstitute, saveGroup} from "../../redux/loginReducer";
 import {THEME} from "../../Theme";
 import {SelectModal} from "../Custom/SelectModal";
-import {getCurrentWeek, getNextWeek} from "../../redux/scheduleReducer";
 
 
 export const StudentScreen = ({navigation}) => {
@@ -32,20 +31,26 @@ export const StudentScreen = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Button title={selectedInst} onPress={() => setOpenInst(true)} color={THEME.textColor}/>
+            <View style={styles.margin}>
+                <Button title={selectedInst} onPress={() => setOpenInst(true)} color={THEME.textColor}/>
+            </View>
+            <View  style={styles.margin}>
+                <Button title={selectedCourse} disabled={!course.length} onPress={() => setOpenCourse(true)}
+                        color={THEME.textColor}/>
+            </View>
+            <View  style={styles.margin}>
+                <Button title={selectedGroup} disabled={!group.length} onPress={() => setOpenGroup(true)}
+                        color={THEME.textColor}/>
+            </View>
             <SelectModal data={inst} visible={openInst} setVisible={setOpenInst} setSelected={setSelectedInst}
                          dispatchMethod={(val) => {
                              dispatch(getCourse(val))
                          }}/>
-            <Button title={selectedCourse} disabled={!course.length} onPress={() => setOpenCourse(true)} color={THEME.textColor}/>
             <SelectModal data={course} visible={openCourse} setVisible={setOpenCourse} setSelected={setSelectedCourse}
                          dispatchMethod={(val) => {dispatch(getGroup(val))}}/>
-            <Button title={selectedGroup} disabled={!group.length} onPress={() => setOpenGroup(true)} color={THEME.textColor}/>
             <SelectModal data={group} visible={openGroup} setVisible={setOpenGroup} setSelected={setSelectedGroup}
                          dispatchMethod={async (val) => {
-                             dispatch(saveGroup(val))
-                            await dispatch(getCurrentWeek(val))
-                            await dispatch(getNextWeek(val))
+                             await dispatch(saveGroup(val))
                              navigation.navigate('Footer')
                          }}/>
         </View>
@@ -61,7 +66,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgb(42,42,42)',
     },
     margin: {
-        marginBottom: 20
+        marginBottom: 20,
     }
 })
 

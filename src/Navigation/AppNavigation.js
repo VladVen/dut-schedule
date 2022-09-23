@@ -5,9 +5,9 @@ import {WeekScreen} from "../Screens/WeekScreen";
 import {Ionicons} from "@expo/vector-icons";
 import {NavigationContainer} from "@react-navigation/native";
 import {LoginScreen} from "../Screens/LoginScreen";
-import {THEME} from "../../Theme";
 import {StudentScreen} from "../Screens/StudentScreen";
 import {TeacherScreen} from "../Screens/TeacherScreen";
+import {useSelector} from "react-redux";
 
 
 const SchedNavigator = createNativeStackNavigator();
@@ -49,11 +49,14 @@ function BottomNavigator() {
 
 
 
-export const AppNavigation = (props) => {
+export const AppNavigation = () => {
+    const group = useSelector(state => state.login.myData.group)
+
+    const initialRoute = group ? "Footer" : "Login"
 
     return (
         <NavigationContainer>
-        <SchedNavigator.Navigator initialRouteName={'Login'} screenOptions={{ headerStyle: {
+        <SchedNavigator.Navigator initialRouteName={initialRoute} screenOptions={{ headerStyle: {
                 backgroundColor: 'rgb(2,138,124)',
             },
             headerTintColor: 'white'
