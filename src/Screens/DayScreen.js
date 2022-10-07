@@ -1,15 +1,19 @@
-import React, {useCallback, useEffect} from "react";
-import {ActivityIndicator, StyleSheet, Text, useWindowDimensions, View} from "react-native";
+import React, {useEffect} from "react";
+import {Text, useWindowDimensions} from "react-native";
 import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import AppHeaderButton from "../Custom/AppHeaderButton";
 import {useDispatch, useSelector} from "react-redux";
 import {Day} from "../Components/Day";
 import {TabBar, TabView} from "react-native-tab-view";
 import {THEME} from "../../Theme";
-import {getCurrentWeek, getNextWeek, getSecondWeek, getThirdWeek} from "../../redux/scheduleReducer";
+import {clearStudentsData} from "../../redux/loginStudentReducer";
+import {clearScheduleData} from "../../redux/scheduleReducer";
+import {clearTeachersData} from "../../redux/loginTeacherReducer";
 
 
 export const DayScreen = ({navigation}) => {
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
         navigation.setOptions({
@@ -17,26 +21,19 @@ export const DayScreen = ({navigation}) => {
                 <HeaderButtons HeaderButtonComponent={AppHeaderButton}>
                     <Item title={'Menu'}
                           iconName={'menu'}
-                          onPress={() => navigation.navigate('Login')}
+                          onPress={() => {
+                              navigation.navigate('Login')
+                              dispatch(clearStudentsData())
+                              dispatch(clearTeachersData())
+                              dispatch(clearScheduleData())
+                          }}
                     />
                 </HeaderButtons>
             ),
         })
     }, [])
-    const dispatch = useDispatch()
-    const schedule = useSelector(state => state.schedule.month)
-    const group = useSelector(state => state.login.myData.group)
 
-    const getData = useCallback(async () => {
-        await dispatch(getCurrentWeek(group))
-        await dispatch(getNextWeek(group))
-        await dispatch(getSecondWeek(group))
-        await dispatch(getThirdWeek(group))
-    }, [getCurrentWeek, getNextWeek, getSecondWeek, getThirdWeek])
-
-    useEffect(() => {
-        getData()
-    }, [])
+    const schedule = useSelector(state => state.schedule.month.currentWeek)
 
     const layout = useWindowDimensions();
 
@@ -56,19 +53,19 @@ export const DayScreen = ({navigation}) => {
     const renderScene = ({route}) => {
         switch (route.key) {
             case 'Monday':
-                return <Day schedule={schedule.currentWeek[0]}/>;
+                return <Day schedule={schedule[0]}/>;
             case 'Tuesday':
-                return <Day schedule={schedule.currentWeek[1]}/>;
+                return <Day schedule={schedule[1]}/>;
             case 'Wednesday':
-                return <Day schedule={schedule.currentWeek[2]}/>;
+                return <Day schedule={schedule[2]}/>;
             case 'Thursday':
-                return <Day schedule={schedule.currentWeek[3]}/>;
+                return <Day schedule={schedule[3]}/>;
             case 'Friday':
-                return <Day schedule={schedule.currentWeek[4]}/>;
+                return <Day schedule={schedule[4]}/>;
             case 'Saturday':
-                return <Day schedule={schedule.currentWeek[5]}/>;
+                return <Day schedule={schedule[5]}/>;
             case 'Sunday':
-                return <Day schedule={schedule.currentWeek[6]}/>;
+                return <Day schedule={schedule[6]}/>;
             default:
                 return null;
         }
@@ -76,41 +73,28 @@ export const DayScreen = ({navigation}) => {
     const renderTabBar = (props) => (
         <TabBar
             {...props}
+            style={{
+                backgroundColor: THEME.headerColor
+            }}
             renderLabel={({route}) => (
-                    <Text style={{fontSize: 13, fontFamily: 'eUkraine'}}>
+                    <Text style={{fontSize: 13, fontFamily: 'eUkraine',
+                    }}>
                         {route.title}
                     </Text>
             )}
         />
     );
 
-    if (schedule.thirdWeek[0] && schedule.secondWeek[0] &&
-        schedule.nextWeek[0] && schedule.currentWeek[0]) {
-        return (
-            <TabView
-                navigationState={{index, routes}}
-                renderScene={renderScene}
-                renderTabBar={renderTabBar}
-                onIndexChange={setIndex}
-                initialLayout={{width: layout.width}}
-                style={{backgroundColor: THEME.background}}
-            />
-        );
-    } else {
-        return <View style={styles.container}>
-            <ActivityIndicator color={THEME.textColor} size={'large'}/>
-        </View>
-    }
-
+    return (
+        <TabView
+            navigationState={{index, routes}}
+            renderScene={renderScene}
+            renderTabBar={renderTabBar}
+            onIndexChange={setIndex}
+            initialLayout={{width: layout.width}}
+            style={{backgroundColor: THEME.background}}
+        />
+    );
 }
 
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: THEME.background,
-    },
-})
 

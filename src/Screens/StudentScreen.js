@@ -1,7 +1,7 @@
 import {ActivityIndicator, Button, StyleSheet, View} from "react-native";
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getCourse, getGroup, getInstitute, saveGroup} from "../../redux/loginReducer";
+import {getCourse, getGroup, getInstitute, saveGroup} from "../../redux/loginStudentReducer";
 import {THEME} from "../../Theme";
 import {SelectModal} from "../Custom/SelectModal";
 
@@ -24,6 +24,7 @@ export const StudentScreen = ({navigation}) => {
     useEffect(() => {
         loadInst()
     }, [])
+
 
     if (!inst) return <View style={styles.container}>
         <ActivityIndicator color={THEME.textColor} size={'large'}/>
@@ -50,7 +51,7 @@ export const StudentScreen = ({navigation}) => {
                          dispatchMethod={(val) => {dispatch(getGroup(val))}}/>
             <SelectModal data={group} visible={openGroup} setVisible={setOpenGroup} setSelected={setSelectedGroup}
                          dispatchMethod={async (val) => {
-                             await dispatch(saveGroup(val))
+                             dispatch(saveGroup(val))
                              navigation.navigate('Footer')
                          }}/>
         </View>
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: 'rgb(42,42,42)',
+        backgroundColor: THEME.background,
     },
     margin: {
         marginBottom: 20,

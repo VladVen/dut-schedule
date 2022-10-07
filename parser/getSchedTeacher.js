@@ -1,8 +1,8 @@
 import * as cheerio from "cheerio";
 
 
-export const getSched = async (group, parsedDate1 , parsedDate2 ) => {
-    let response = await fetch(`https://e-rozklad.dut.edu.ua/timeTable/group?TimeTableForm[group]=${group}&TimeTableForm[date1]=${parsedDate1}&TimeTableForm[date2]=${parsedDate2}`)
+export const getSchedTeacher = async (id, parsedDate1 , parsedDate2 ) => {
+    let response = await fetch(`https://e-rozklad.dut.edu.ua/timeTable/teacher?TimeTableForm[teacher]=${id}&TimeTableForm[date1]=${parsedDate1}&TimeTableForm[date2]=${parsedDate2}`)
     let parsedPage = await response.text()
     let cheer = cheerio.load(parsedPage)
 
@@ -30,3 +30,4 @@ export const getSched = async (group, parsedDate1 , parsedDate2 ) => {
 
     return weekSchedule
 }
+

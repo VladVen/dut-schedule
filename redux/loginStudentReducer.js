@@ -1,11 +1,16 @@
 import {selectInst} from "../parser/selectInst.js";
 import {selectCourse} from "../parser/selectCourse";
 import {selectGroup} from "../parser/selectGroup";
+import {Alert} from "react-native";
 
 const GET_INST = 'GET_INST'
 const GET_COURSE = 'GET_COURSE'
 const GET_GROUP = 'GET_GROUP'
 const SAVE_GROUP = 'SAVE_GROUP'
+const CLEAR_STUDENTS_DATA = 'CLEAR_STUDENTS_DATA'
+const CATCH_STUDENTS_ERROR = 'CATCH_STUDENTS_ERROR'
+
+
 
 const initialState = {
    selectData: {
@@ -17,11 +22,11 @@ const initialState = {
        inst: null,
        course: null,
        group: null
-   }
+   },
 }
 
 
-export const loginReducer = (state = initialState, action) => {
+export const loginStudentReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_INST: {
             return {
@@ -65,13 +70,31 @@ export const loginReducer = (state = initialState, action) => {
                 myData: {
                     ...state.myData,
                     group: action.myData
-                },
+                }
+            }
+        }
+        case CLEAR_STUDENTS_DATA: {
+            return {
+                ...state,
                 selectData: {
+                    ...state.selectData,
                     inst: [],
                     course: [],
                     group: []
+                },
+                myData: {
+                    ...state.myData,
+                    inst: null,
+                    course: null,
+                    group: null
                 }
             }
+        }
+        case CATCH_STUDENTS_ERROR: {
+           return {
+               ...state,
+               errorMessage: action.error
+           }
         }
         default:
             return state
@@ -95,10 +118,35 @@ export const saveGroup = (val) => ({
     type: SAVE_GROUP,
     myData: val
 })
+export const clearStudentsData = () => ({
+    type: CLEAR_STUDENTS_DATA,
+})
+
+
 
 export const getInstitute = () => async (dispatch) => {
-    const inst = await selectInst()
-    dispatch(loadInst(inst))
+    try{
+        const inst = await selectInst()
+        dispatch(loadInst(inst))
+    } catch (e) {
+        console.log(e)
+        Alert.alert(
+            `${e}`,
+            "It seems like you haven't internet connection",
+            [
+                {
+                    text: "Retry",
+                    onPress: () => {
+                        dispatch(getInstitute())
+                    },
+                    style: "default",
+                },
+            ],
+            {
+                cancelable: false,
+            }
+        )
+    }
 }
 export const getCourse = (val) => async (dispatch) => {
     const course = await selectCourse(val)

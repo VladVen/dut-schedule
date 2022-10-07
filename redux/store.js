@@ -1,11 +1,13 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import {loginReducer} from "./loginReducer";
+import {loginStudentReducer} from "./loginStudentReducer";
 import thunk from "redux-thunk";
 import {scheduleReducer} from "./scheduleReducer";
+import {loginTeacherReducer} from "./loginTeacherReducer";
 
 
 const reducers = combineReducers({
-    login: loginReducer,
+    login: loginStudentReducer,
+    loginTeacher: loginTeacherReducer,
     schedule: scheduleReducer
 })
 
