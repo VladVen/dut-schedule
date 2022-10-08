@@ -1,12 +1,21 @@
 import React, {useEffect, useState} from "react";
-import {ActivityIndicator, Text, useWindowDimensions, View} from "react-native";
+import {ActivityIndicator, StyleSheet, Text, useWindowDimensions, View} from "react-native";
 import {useSelector} from "react-redux";
 import {THEME} from "../../Theme";
 import {TabBar, TabView} from "react-native-tab-view";
 import {Week} from "../Components/Week";
+import {DayWeekHeaderButtons} from "../Custom/DayWeekHeaderButtons";
 
 
-export const WeekScreen = () => {
+export const WeekScreen = ({navigation}) => {
+
+
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => <DayWeekHeaderButtons navigation={navigation}/>
+        })
+    }, [])
 
     const schedule = useSelector(state => state.schedule.month)
 
@@ -83,13 +92,21 @@ export const WeekScreen = () => {
             />
         );
     } else {
-        return <View>
+        return <View style={styles.container}>
             <ActivityIndicator color={THEME.textColor} size={'large'}/>
         </View>
     }
 }
 
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: THEME.background,
+    },
+})
 
 
 

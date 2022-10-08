@@ -1,35 +1,19 @@
 import React, {useEffect} from "react";
 import {Text, useWindowDimensions} from "react-native";
-import {HeaderButtons, Item} from "react-navigation-header-buttons";
-import AppHeaderButton from "../Custom/AppHeaderButton";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {Day} from "../Components/Day";
 import {TabBar, TabView} from "react-native-tab-view";
 import {THEME} from "../../Theme";
-import {clearStudentsData} from "../../redux/loginStudentReducer";
-import {clearScheduleData} from "../../redux/scheduleReducer";
-import {clearTeachersData} from "../../redux/loginTeacherReducer";
+import {DayWeekHeaderButtons} from "../Custom/DayWeekHeaderButtons";
 
 
 export const DayScreen = ({navigation}) => {
 
-    const dispatch = useDispatch()
 
     useEffect(() => {
         navigation.setOptions({
-            headerRight: () => (
-                <HeaderButtons HeaderButtonComponent={AppHeaderButton}>
-                    <Item title={'Menu'}
-                          iconName={'menu'}
-                          onPress={() => {
-                              navigation.navigate('Login')
-                              dispatch(clearStudentsData())
-                              dispatch(clearTeachersData())
-                              dispatch(clearScheduleData())
-                          }}
-                    />
-                </HeaderButtons>
-            ),
+            headerRight: () => <DayWeekHeaderButtons navigation={navigation}/>
+
         })
     }, [])
 

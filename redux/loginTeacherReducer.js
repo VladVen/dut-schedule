@@ -1,5 +1,7 @@
 import {selectDepartment} from "../parser/selectDepartment";
 import {selectTeacher} from "../parser/selectTeacher";
+import {InternetAlert} from "../src/Custom/InternetAlert";
+import {getInstitute} from "./loginStudentReducer";
 
 const GET_DEP = 'GET_DEP'
 const GET_TEACHER = 'GET_TEACHER'
@@ -82,12 +84,20 @@ export const clearTeachersData = () => ({
 
 
 export const getDepartment = () => async (dispatch) => {
-    const dep = await selectDepartment()
-    dispatch(loadDepartment(dep))
+    try {
+        const dep = await selectDepartment()
+        dispatch(loadDepartment(dep))
+    } catch (e) {
+        InternetAlert(e, () => dispatch(getInstitute()))
+    }
 }
 export const getTeacher = (dep) => async (dispatch) => {
-    const teachers = await selectTeacher(dep)
-    dispatch(loadTeacher(teachers))
+    try {
+        const teachers = await selectTeacher(dep)
+        dispatch(loadTeacher(teachers))
+    } catch (e) {
+        InternetAlert(e, () => dispatch(getInstitute()))
+    }
 }
 
 

@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {WeekScreen} from "../Screens/WeekScreen";
-import {Ionicons} from "@expo/vector-icons";
+import {FontAwesome5} from "@expo/vector-icons";
 import {NavigationContainer} from "@react-navigation/native";
 import {LoginScreen} from "../Screens/LoginScreen";
 import {StudentScreen} from "../Screens/StudentScreen";
@@ -9,6 +9,7 @@ import {TeacherScreen} from "../Screens/TeacherScreen";
 import {useSelector} from "react-redux";
 import {DayScreenContainer} from "../Screens/DayScreenContainer";
 import {THEME} from "../../Theme";
+import {SettingsScreen} from "../Screens/SettingsScreen";
 
 
 const SchedNavigator = createNativeStackNavigator();
@@ -24,29 +25,24 @@ function BottomNavigator() {
                     width: 0, height: 0
                 },
             },
-            headerTintColor: '#fff',
+            headerTintColor: 'black',
             tabBarStyle: {
                 backgroundColor: THEME.headerColor,
-                color: '#fff'
+                borderTopColor: "transparent"
             },
             tabBarActiveTintColor: '#fff',
-            tabBarInactiveTintColor: '#757575',
-            tabBarLabelStyle: {
-                color: '#fff'
-            }
-        }}>
+            tabBarInactiveTintColor: '#444242',
+        }} >
             <Bottom.Screen name="Day" component={DayScreenContainer}
                            options={{
                                tabBarIcon: (info) => (
-                                   <Ionicons name="ios-today"
-                                             size={24}
-                                             color={info.color}/>),
+                                   <FontAwesome5 name="calendar-day" size={20} color={info.color} />),
                            }}
             />
             <Bottom.Screen name="Week" component={WeekScreen}
                            options={{
-                               tabBarIcon: (info) => (<Ionicons name="star" size={24}
-                                                                color={info.color}/>),
+                               tabBarIcon: (info) => (
+                                   <FontAwesome5 name="calendar-week" size={20} color={info.color} />),
                            }}
             />
         </Bottom.Navigator>
@@ -66,7 +62,7 @@ export const AppNavigation = () => {
                 headerStyle: {
                     backgroundColor: THEME.headerColor,
                 },
-                headerTintColor: 'white'
+                headerTintColor: 'white',
             }}>
 
                 <SchedNavigator.Screen name="Login" component={LoginScreen}
@@ -76,10 +72,13 @@ export const AppNavigation = () => {
                 />
                 <SchedNavigator.Screen name="Student" component={StudentScreen}/>
                 <SchedNavigator.Screen name="Teacher" component={TeacherScreen}/>
+                <SchedNavigator.Screen name="Settings" component={SettingsScreen}/>
                 <SchedNavigator.Screen
                     name="Footer"
                     component={BottomNavigator}
-                    options={{headerShown: false}}
+                    options={{headerShown: false,
+                        title: 'Schedule'
+                    }}
                 />
             </SchedNavigator.Navigator>
         </NavigationContainer>

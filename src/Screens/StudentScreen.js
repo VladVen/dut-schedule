@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getCourse, getGroup, getInstitute, saveGroup} from "../../redux/loginStudentReducer";
 import {THEME} from "../../Theme";
 import {SelectModal} from "../Custom/SelectModal";
+import {CommonActions} from "@react-navigation/native";
 
 
 export const StudentScreen = ({navigation}) => {
@@ -25,6 +26,10 @@ export const StudentScreen = ({navigation}) => {
         loadInst()
     }, [])
 
+    useEffect(() => {
+        console.log(openGroup)
+    }, [openGroup])
+
 
     if (!inst) return <View style={styles.container}>
         <ActivityIndicator color={THEME.textColor} size={'large'}/>
@@ -33,7 +38,8 @@ export const StudentScreen = ({navigation}) => {
     return (
         <View style={styles.container}>
             <View style={styles.margin}>
-                <Button title={selectedInst} onPress={() => setOpenInst(true)} color={THEME.textColor}/>
+                <Button title={selectedInst} disabled={!inst.length}
+                        onPress={() => setOpenInst(true)} color={THEME.textColor}/>
             </View>
             <View  style={styles.margin}>
                 <Button title={selectedCourse} disabled={!course.length} onPress={() => setOpenCourse(true)}
@@ -50,9 +56,18 @@ export const StudentScreen = ({navigation}) => {
             <SelectModal data={course} visible={openCourse} setVisible={setOpenCourse} setSelected={setSelectedCourse}
                          dispatchMethod={(val) => {dispatch(getGroup(val))}}/>
             <SelectModal data={group} visible={openGroup} setVisible={setOpenGroup} setSelected={setSelectedGroup}
-                         dispatchMethod={async (val) => {
+                         dispatchMethod={(val) => {
                              dispatch(saveGroup(val))
-                             navigation.navigate('Footer')
+                             navigation.dispatch(
+                                 CommonActions.reset({
+                                     index: 0,
+                                     routes: [
+                                         {
+                                             name: 'Footer',
+                                         },
+                                     ],
+                                 })
+                             )
                          }}/>
         </View>
     )

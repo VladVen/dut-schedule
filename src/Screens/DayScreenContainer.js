@@ -9,7 +9,7 @@ import {DayScreen} from "./DayScreen";
 export const DayScreenContainer = ({navigation}) => {
 
     const dispatch = useDispatch()
-    const schedule = useSelector(state => state.schedule.month.currentWeek)
+    const fetching = useSelector(state => state.schedule.fetching)
     const group = useSelector(state => state.login.myData.group)
     const teacher = useSelector(state => state.loginTeacher.myData.teacher)
 
@@ -26,7 +26,7 @@ export const DayScreenContainer = ({navigation}) => {
     }, [])
 
 
-    if (!schedule.length) {
+    if (fetching) {
         return <View style={styles.container}>
             <ActivityIndicator color={THEME.textColor} size={'large'}/>
         </View>

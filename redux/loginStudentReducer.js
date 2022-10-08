@@ -1,7 +1,7 @@
 import {selectInst} from "../parser/selectInst.js";
 import {selectCourse} from "../parser/selectCourse";
 import {selectGroup} from "../parser/selectGroup";
-import {Alert} from "react-native";
+import {InternetAlert} from "../src/Custom/InternetAlert";
 
 const GET_INST = 'GET_INST'
 const GET_COURSE = 'GET_COURSE'
@@ -11,18 +11,17 @@ const CLEAR_STUDENTS_DATA = 'CLEAR_STUDENTS_DATA'
 const CATCH_STUDENTS_ERROR = 'CATCH_STUDENTS_ERROR'
 
 
-
 const initialState = {
-   selectData: {
-       inst: [],
-       course: [],
-       group: []
-   },
-   myData: {
-       inst: null,
-       course: null,
-       group: null
-   },
+    selectData: {
+        inst: [],
+        course: [],
+        group: []
+    },
+    myData: {
+        inst: null,
+        course: null,
+        group: null
+    },
 }
 
 
@@ -91,10 +90,10 @@ export const loginStudentReducer = (state = initialState, action) => {
             }
         }
         case CATCH_STUDENTS_ERROR: {
-           return {
-               ...state,
-               errorMessage: action.error
-           }
+            return {
+                ...state,
+                errorMessage: action.error
+            }
         }
         default:
             return state
@@ -123,38 +122,29 @@ export const clearStudentsData = () => ({
 })
 
 
-
 export const getInstitute = () => async (dispatch) => {
-    try{
+    try {
         const inst = await selectInst()
         dispatch(loadInst(inst))
     } catch (e) {
-        console.log(e)
-        Alert.alert(
-            `${e}`,
-            "It seems like you haven't internet connection",
-            [
-                {
-                    text: "Retry",
-                    onPress: () => {
-                        dispatch(getInstitute())
-                    },
-                    style: "default",
-                },
-            ],
-            {
-                cancelable: false,
-            }
-        )
+        InternetAlert(e, () => dispatch(getInstitute()))
     }
 }
 export const getCourse = (val) => async (dispatch) => {
-    const course = await selectCourse(val)
-    dispatch(loadCourse(course, val))
+    try {
+        const course = await selectCourse(val)
+        dispatch(loadCourse(course, val))
+    } catch (e) {
+        InternetAlert(e, () => dispatch(getInstitute()))
+    }
 }
 export const getGroup = (course) => async (dispatch, getState) => {
-    const inst = getState().login.myData.inst
-    const group = await selectGroup(inst, course)
-    dispatch(loadGroup(group, course))
+    try {
+        const inst = getState().login.myData.inst
+        const group = await selectGroup(inst, course)
+        dispatch(loadGroup(group, course))
+    } catch (e) {
+        InternetAlert(e, () => dispatch(getInstitute()))
+    }
 }
 

@@ -1,11 +1,13 @@
 import {getSchedStudent} from "../parser/getSchedStudent";
 import {getSchedTeacher} from "../parser/getSchedTeacher";
+import {InternetAlert} from "../src/Custom/InternetAlert";
+import {getInstitute} from "./loginStudentReducer";
 
 const LOAD_CURRENT_SCHEDULE = 'LOAD_CURRENT_SCHEDULE'
 const LOAD_NEXT_SCHEDULE = 'LOAD_NEXT_SCHEDULE'
 const LOAD_SECOND_SCHEDULE = 'LOAD_SECOND_SCHEDULE'
 const LOAD_THIRD_SCHEDULE = 'LOAD_THIRD_SCHEDULE'
-const CLEAR_SCHEDULE_DATA = 'CLEAR_SCHEDULE_DATA'
+const SET_FETCHING = 'SET_FETCHING'
 
 const initialState = {
     month: {
@@ -13,7 +15,8 @@ const initialState = {
         nextWeek: [],
         secondWeek: [],
         thirdWeek: []
-    }
+    },
+    fetching: true
 }
 
 
@@ -55,18 +58,12 @@ export const scheduleReducer = (state = initialState, action) => {
                 }
             }
         }
-        case CLEAR_SCHEDULE_DATA: {
+        case SET_FETCHING: {
             return {
                 ...state,
-                month: {
-                    ...state.month,
-                    currentWeek: [],
-                    nextWeek: [],
-                    secondWeek: [],
-                    thirdWeek: []
+               fetching: action.status
                 }
             }
-        }
         default:
             return state
     }
@@ -87,9 +84,14 @@ const loadThirdWeek = (sched) => ({
     type: LOAD_THIRD_SCHEDULE,
     payload: sched
 })
-export const clearScheduleData = () => ({
-    type: CLEAR_SCHEDULE_DATA,
+
+
+ const setFetching = (status) => ({
+    type: SET_FETCHING,
+    status
 })
+
+
 const getParsedDate = (d, date1) => {
     let date2 = new Date(d.setDate(d.getDate() + 6 + (((1 + 7 - d.getDay()) % 7) || 7)))
     let parsedDate1 = date1.getDate() + "." + (date1.getMonth() + 1) + "." + date1.getFullYear()
@@ -99,47 +101,89 @@ const getParsedDate = (d, date1) => {
 
 const getDate1 = (number = 0) => {
     let d = new Date();
-    const date1 = new Date(d.setDate(d.getDate() + number  + (((1 + 7 - d.getDay()) % 7) || 7)))
+    const date1 = new Date(d.setDate(d.getDate() + number + (((1 + 7 - d.getDay()) % 7) || 7)))
     return [d, date1]
 }
 
 
-export const getSchedule  = (group, audience = 'student') => async dispatch => {
+export const getSchedule = (group, audience = 'student') => async dispatch => {
     let method = getSchedStudent
     if (audience === 'teacher') {
         method = getSchedTeacher
     }
-   await dispatch( getCurrentWeek(group, method))
-   await dispatch(getNextWeek(group, method))
-   await dispatch(getSecondWeek(group, method))
-   await dispatch(getThirdWeek(group, method))
+    dispatch(setFetching(true))
+    try {
+        await dispatch(getCurrentWeek(group, method))
+    } catch (e) {
+        InternetAlert(e, () => dispatch(getInstitute()))
+    }
+    try {
+        await dispatch(getNextWeek(group, method))
+
+    } catch (e) {
+        InternetAlert(e, () => dispatch(getInstitute()))
+    }
+    try {
+        await dispatch(getSecondWeek(group, method))
+
+    } catch (e) {
+        InternetAlert(e, () => dispatch(getInstitute()))
+    }
+    try {
+        await dispatch(getThirdWeek(group, method))
+
+    } catch (e) {
+        InternetAlert(e, () => dispatch(getInstitute()))
+    } finally {
+        dispatch(setFetching(false))
+    }
+
 }
 
 export const getCurrentWeek = (group, method) => async (dispatch) => {
+    try {
+        let d = new Date();
+        let date1 = new Date(d.setDate(d.getDate() - (d.getDay() + 6) % 7))
+        const [parsedDate1, parsedDate2] = getParsedDate(d, date1)
 
-    let d = new Date();
-    let date1 = new Date(d.setDate(d.getDate() - (d.getDay() + 6) % 7))
-    const [parsedDate1, parsedDate2] = getParsedDate(d, date1)
+        const schedule = await method(group, parsedDate1, parsedDate2)
+        dispatch(loadCurrentWeek(schedule))
+    } catch (e) {
+        throw e
+    }
 
-    const schedule = await method(group, parsedDate1 , parsedDate2)
-    dispatch(loadCurrentWeek(schedule))
 }
 
 export const getNextWeek = (group, method) => async (dispatch) => {
-    const [d, date1] = getDate1()
-    const [parsedDate1, parsedDate2] = getParsedDate(d, date1)
-    const schedule = await method(group, parsedDate1 , parsedDate2)
-    dispatch(loadNextWeek(schedule))
+    try {
+        const [d, date1] = getDate1()
+        const [parsedDate1, parsedDate2] = getParsedDate(d, date1)
+        const schedule = await method(group, parsedDate1, parsedDate2)
+        dispatch(loadNextWeek(schedule))
+    } catch (e) {
+        throw e
+    }
+
 }
 export const getSecondWeek = (group, method) => async (dispatch) => {
-    const [d, date1] = getDate1(7)
-    const [parsedDate1, parsedDate2] = getParsedDate(d, date1)
-    const schedule = await method(group, parsedDate1 , parsedDate2)
-    dispatch(loadSecondWeek(schedule))
+    try {
+        const [d, date1] = getDate1(7)
+        const [parsedDate1, parsedDate2] = getParsedDate(d, date1)
+        const schedule = await method(group, parsedDate1, parsedDate2)
+        dispatch(loadSecondWeek(schedule))
+    } catch (e) {
+        throw e
+    }
+
 }
 export const getThirdWeek = (group, method) => async (dispatch) => {
-    const [d, date1] = getDate1(14)
-    const [parsedDate1, parsedDate2] = getParsedDate(d, date1)
-    const schedule = await method(group, parsedDate1 , parsedDate2)
-    dispatch(loadThirdWeek(schedule))
+    try {
+        const [d, date1] = getDate1(14)
+        const [parsedDate1, parsedDate2] = getParsedDate(d, date1)
+        const schedule = await method(group, parsedDate1, parsedDate2)
+        dispatch(loadThirdWeek(schedule))
+    } catch (e) {
+        throw e
+    }
+
 }

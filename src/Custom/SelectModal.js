@@ -15,8 +15,8 @@ export const SelectModal = ({visible, data, setSelected, dispatchMethod, setVisi
                                 <Button title={item.name} color={THEME.textColor}
                                         onPress={async () => {
                                             setSelected(item.name)
-                                            await dispatchMethod(item.value)
-                                            setVisible(false)
+                                            await setVisible(false)
+                                            dispatchMethod(item.value)
                                         }}/>
                             </View>)
                         }

@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {THEME} from "../../Theme";
 import {SelectModal} from "../Custom/SelectModal";
 import {getDepartment, getTeacher, saveTeacher} from "../../redux/loginTeacherReducer";
+import {CommonActions} from "@react-navigation/native";
 
 
 export const TeacherScreen = ({navigation}) => {
@@ -46,7 +47,16 @@ export const TeacherScreen = ({navigation}) => {
             <SelectModal data={teacher} visible={openTeacher} setVisible={setOpenTeacher} setSelected={setSelectedTeacher}
                          dispatchMethod={async (val) => {
                              dispatch(saveTeacher(val))
-                             navigation.navigate('Footer')
+                             navigation.dispatch(
+                                 CommonActions.reset({
+                                     index: 0,
+                                     routes: [
+                                         {
+                                             name: 'Footer',
+                                         },
+                                     ],
+                                 })
+                             )
                          }}/>
         </View>
     )
