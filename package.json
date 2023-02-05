@@ -28,6 +28,7 @@
     "react-native-screens": "~3.15.0",
     "react-native-select-dropdown": "^2.0.4",
     "react-native-tab-view": "^3.1.1",
+    "react-navigation": "^4.4.4",
     "react-navigation-header-buttons": "^9.0.1",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
@@ -35,7 +36,8 @@
     "redux-thunk": "^2.4.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "prettier": "2.8.3"
   },
   "private": true
 }

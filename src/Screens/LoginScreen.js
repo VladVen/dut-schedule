@@ -1,27 +1,27 @@
 import React from "react";
-import {Button, StyleSheet, Text, View} from "react-native";
-import {THEME} from "../../Theme";
+import { StyleSheet, View } from "react-native";
+import { THEME } from "../../Theme";
+import AppButton from "../Components/UI/AppButton";
 
-
-export const LoginScreen = ({navigation}) => {
-    return(
-        <View style={styles.container}>
-            <View style={styles.margin}><Button title={'Student'} color={THEME.textColor} onPress={() => navigation.navigate('Student')}/></View>
-            <View><Button title={'Teacher'} color={THEME.textColor} onPress={() => navigation.navigate('Teacher')} /></View>
-
-
-        </View>
-    )
-}
+export const LoginScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <AppButton onPress={() => navigation.navigate("Student")} size={"l"}>
+        Student
+      </AppButton>
+      <AppButton onPress={() => navigation.navigate("Teacher")} size={"l"}>
+        Teacher
+      </AppButton>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: THEME.background
-    },
-    margin: {
-        marginBottom: 20
-    }
-})
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: THEME.background,
+  },
+});
