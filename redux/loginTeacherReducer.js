@@ -6,6 +6,7 @@ import { getInstitute } from "./loginStudentReducer";
 const GET_DEP = "GET_DEP";
 const GET_TEACHER = "GET_TEACHER";
 const SAVE_TEACHER = "SAVE_TEACHER";
+const SAVE_TEACHER_NAME = "SAVE_TEACHER_NAME";
 const CLEAR_TEACHERS_DATA = "CLEAR_TEACHERS_DATA";
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   },
   myData: {
     teacher: null,
+    teacherName: null
   },
 };
 
@@ -47,6 +49,15 @@ export const loginTeacherReducer = (state = initialState, action) => {
         },
       };
     }
+    case SAVE_TEACHER_NAME: {
+      return {
+        ...state,
+        myData: {
+          ...state.myData,
+          teacherName: action.payload,
+        },
+      };
+    }
     case CLEAR_TEACHERS_DATA: {
       return {
         ...state,
@@ -58,6 +69,7 @@ export const loginTeacherReducer = (state = initialState, action) => {
         myData: {
           ...state.myData,
           teacher: null,
+          teacherName: null
         },
       };
     }
@@ -75,6 +87,10 @@ const loadTeacher = (teacher) => ({
 });
 export const saveTeacher = (teacher) => ({
   type: SAVE_TEACHER,
+  payload: teacher,
+});
+export const saveTeacherName = (teacher) => ({
+  type: SAVE_TEACHER_NAME,
   payload: teacher,
 });
 export const clearTeachersData = () => ({

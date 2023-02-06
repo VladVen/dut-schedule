@@ -2,15 +2,21 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { THEME } from "../../Theme";
 import AppButton from "../Components/UI/AppButton";
+import {useSelector} from "react-redux";
+import {localisation} from "../localisation/localisation";
 
 export const LoginScreen = ({ navigation }) => {
+
+    const lang = useSelector((state) => state.settings.lang);
+    const localise = localisation(lang)
+
   return (
     <View style={styles.container}>
       <AppButton onPress={() => navigation.navigate("Student")} size={"l"}>
-        Student
+          {localise.login.student}
       </AppButton>
       <AppButton onPress={() => navigation.navigate("Teacher")} size={"l"}>
-        Teacher
+          {localise.login.teacher}
       </AppButton>
     </View>
   );

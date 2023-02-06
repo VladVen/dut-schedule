@@ -7,6 +7,7 @@ const GET_INST = "GET_INST";
 const GET_COURSE = "GET_COURSE";
 const GET_GROUP = "GET_GROUP";
 const SAVE_GROUP = "SAVE_GROUP";
+const SAVE_GROUP_NAME = "SAVE_GROUP_NAME";
 const CLEAR_STUDENTS_DATA = "CLEAR_STUDENTS_DATA";
 const CATCH_STUDENTS_ERROR = "CATCH_STUDENTS_ERROR";
 
@@ -15,13 +16,16 @@ const initialState = {
     inst: [],
     course: [],
     group: [],
+
   },
   myData: {
     inst: null,
     course: null,
     group: null,
+    groupName: null,
   },
 };
+
 
 export const loginStudentReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -70,6 +74,15 @@ export const loginStudentReducer = (state = initialState, action) => {
         },
       };
     }
+    case SAVE_GROUP_NAME: {
+      return {
+        ...state,
+        myData: {
+          ...state.myData,
+          groupName: action.myData,
+        },
+      };
+    }
     case CLEAR_STUDENTS_DATA: {
       return {
         ...state,
@@ -84,6 +97,7 @@ export const loginStudentReducer = (state = initialState, action) => {
           inst: null,
           course: null,
           group: null,
+          groupName: null,
         },
       };
     }
@@ -113,6 +127,10 @@ const loadGroup = (group, val) => ({
 });
 export const saveGroup = (val) => ({
   type: SAVE_GROUP,
+  myData: val,
+});
+export const saveGroupName = (val) => ({
+  type: SAVE_GROUP_NAME,
   myData: val,
 });
 export const clearStudentsData = () => ({

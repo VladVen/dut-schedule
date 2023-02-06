@@ -1,15 +1,16 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { THEME } from "../../Theme";
 import { SelectModal } from "../Components/SelectModal";
 import {
-  getDepartment,
-  getTeacher,
-  saveTeacher,
+    getDepartment,
+    getTeacher,
+    saveTeacher, saveTeacherName,
 } from "../../redux/loginTeacherReducer";
 import { CommonActions } from "@react-navigation/native";
 import AppButton from "../Components/UI/AppButton";
+import { localisation } from "../localisation/localisation";
 
 export const TeacherScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -18,9 +19,17 @@ export const TeacherScreen = ({ navigation }) => {
   );
   const teacher = useSelector((state) => state.loginTeacher.selectData.teacher);
   const [openDep, setOpenDep] = useState(false);
-  const [selectedDep, setSelectedDep] = useState("Select your Department");
   const [openTeacher, setOpenTeacher] = useState(false);
-  const [selectedTeacher, setSelectedTeacher] = useState("Select you");
+
+  const lang = useSelector((state) => state.settings.lang);
+  const localise = useMemo(() => localisation(lang), [lang]);
+
+  const [selectedDep, setSelectedDep] = useState(
+    () => localise.teacher.department
+  );
+  const [selectedTeacher, setSelectedTeacher] = useState(
+    () => localise.teacher.you
+  );
 
   const loadDep = useCallback(
     async () => await dispatch(getDepartment()),
@@ -62,14 +71,17 @@ export const TeacherScreen = ({ navigation }) => {
         setSelected={setSelectedDep}
         dispatchMethod={(val) => {
           dispatch(getTeacher(val));
-          setSelectedTeacher("Select you");
+          setSelectedTeacher(localise.teacher.you);
         }}
       />
       <SelectModal
         data={teacher}
         visible={openTeacher}
         setVisible={setOpenTeacher}
-        setSelected={setSelectedTeacher}
+        setSelected={(name) => {
+            setSelectedTeacher(name)
+            dispatch(saveTeacherName(name))
+        }}
         dispatchMethod={async (val) => {
           dispatch(saveTeacher(val));
           navigation.dispatch(

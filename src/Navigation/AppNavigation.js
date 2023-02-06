@@ -7,14 +7,18 @@ import { LoginScreen } from "../Screens/LoginScreen";
 import { StudentScreen } from "../Screens/StudentScreen";
 import { TeacherScreen } from "../Screens/TeacherScreen";
 import { useSelector } from "react-redux";
-import { DayScreenContainer } from "../Screens/DayScreenContainer";
+import { DayScreen } from "../Screens/DayScreen";
 import { THEME } from "../../Theme";
 import { SettingsScreen } from "../Screens/SettingsScreen";
+import { useMemo } from "react";
+import { localisation } from "../localisation/localisation";
 
 const SchedNavigator = createNativeStackNavigator();
 const Bottom = createBottomTabNavigator();
 
 function BottomNavigator() {
+  const name = useSelector((state) => state.login.myData.groupName);
+  const teacherName = useSelector((state) => state.loginTeacher.myData.teacherName);
   return (
     <Bottom.Navigator
       screenOptions={{
@@ -38,8 +42,9 @@ function BottomNavigator() {
     >
       <Bottom.Screen
         name="Day"
-        component={DayScreenContainer}
+        component={DayScreen}
         options={{
+            headerTitle: name || teacherName.split(' ')[0],
           tabBarIcon: (info) => (
             <FontAwesome5 name="calendar-day" size={20} color={info.color} />
           ),
@@ -49,6 +54,7 @@ function BottomNavigator() {
         name="Week"
         component={WeekScreen}
         options={{
+          headerTitle: name || teacherName.split(' ')[0],
           tabBarIcon: (info) => (
             <FontAwesome5 name="calendar-week" size={20} color={info.color} />
           ),
@@ -62,6 +68,9 @@ export const AppNavigation = () => {
   const group = useSelector((state) => state.login.myData.group);
   const teacher = useSelector((state) => state.loginTeacher.myData.teacher);
 
+  const lang = useSelector((state) => state.settings.lang);
+  const localise = useMemo(() => localisation(lang), [lang]);
+
   const initialRoute = group || teacher ? "Footer" : "Login";
 
   return (
@@ -72,23 +81,42 @@ export const AppNavigation = () => {
           headerStyle: {
             backgroundColor: THEME.headerColor,
           },
-          headerTintColor: "white",
+          headerTintColor: THEME.headerText,
         }}
       >
         <SchedNavigator.Screen
           name="Login"
           component={LoginScreen}
           options={{
-            title: "Choose your side",
+            title: localise.login.header,
           }}
         />
-        <SchedNavigator.Screen name="Student" component={StudentScreen} />
-        <SchedNavigator.Screen name="Teacher" component={TeacherScreen} />
-        <SchedNavigator.Screen name="Settings" component={SettingsScreen} />
+        <SchedNavigator.Screen
+          name="Student"
+          component={StudentScreen}
+          options={{
+            title: localise.student.header,
+          }}
+        />
+        <SchedNavigator.Screen
+          name="Teacher"
+          options={{
+            title: localise.teacher.header,
+          }}
+          component={TeacherScreen}
+        />
+        <SchedNavigator.Screen
+          name="Settings"
+          component={SettingsScreen}
+          options={{
+            headerTintColor: "black",
+            title: localise.settings.header,
+          }}
+        />
         <SchedNavigator.Screen
           name="Footer"
           component={BottomNavigator}
-          options={{ headerShown: false, title: "Schedule" }}
+          options={{ headerShown: false, title: localise.schedule }}
         />
       </SchedNavigator.Navigator>
     </NavigationContainer>

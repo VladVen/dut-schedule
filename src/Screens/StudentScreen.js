@@ -1,16 +1,17 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getCourse,
-  getGroup,
-  getInstitute,
-  saveGroup,
+    getCourse,
+    getGroup,
+    getInstitute,
+    saveGroup, saveGroupName,
 } from "../../redux/loginStudentReducer";
 import { THEME } from "../../Theme";
 import { SelectModal } from "../Components/SelectModal";
 import { CommonActions } from "@react-navigation/native";
 import AppButton from "../Components/UI/AppButton";
+import { localisation } from "../localisation/localisation";
 
 export const StudentScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -18,11 +19,19 @@ export const StudentScreen = ({ navigation }) => {
   const course = useSelector((state) => state.login.selectData.course);
   const group = useSelector((state) => state.login.selectData.group);
   const [openInst, setOpenInst] = useState(false);
-  const [selectedInst, setSelectedInst] = useState("Select your Institute");
   const [openCourse, setOpenCourse] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState("Select your Course");
   const [openGroup, setOpenGroup] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState("Select your Group");
+
+  const lang = useSelector((state) => state.settings.lang);
+  const localise = useMemo(() => localisation(lang), [lang]);
+
+  const [selectedInst, setSelectedInst] = useState(() => localise.student.inst);
+  const [selectedCourse, setSelectedCourse] = useState(
+    () => localise.student.course
+  );
+  const [selectedGroup, setSelectedGroup] = useState(
+    () => localise.student.group
+  );
 
   const loadInst = useCallback(
     async () => await dispatch(getInstitute()),
@@ -93,7 +102,10 @@ export const StudentScreen = ({ navigation }) => {
         data={group}
         visible={openGroup}
         setVisible={setOpenGroup}
-        setSelected={setSelectedGroup}
+        setSelected={(name) => {
+          setSelectedGroup(name);
+            dispatch(saveGroupName(name));
+        }}
         dispatchMethod={(val) => {
           dispatch(saveGroup(val));
           navigation.dispatch(

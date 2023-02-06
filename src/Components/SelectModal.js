@@ -1,7 +1,9 @@
 import { Modal, ScrollView, StyleSheet, View } from "react-native";
 import { THEME } from "../../Theme";
-import React from "react";
+import React, {useMemo} from "react";
 import AppButton from "./UI/AppButton";
+import {useSelector} from "react-redux";
+import {localisation} from "../localisation/localisation";
 
 export const SelectModal = ({
   visible,
@@ -10,6 +12,10 @@ export const SelectModal = ({
   dispatchMethod,
   setVisible,
 }) => {
+
+  const lang = useSelector((state) => state.settings.lang);
+  const localise = useMemo(() => localisation(lang), [lang]);
+
   return (
     <Modal visible={visible} animationType={"slide"} transparent={false}>
       <View style={styles.container}>
@@ -35,7 +41,7 @@ export const SelectModal = ({
             color={THEME.dangerColor}
             size={"l"}
           >
-            Go Back
+            {localise.buttons.goBack}
           </AppButton>
         </View>
       </View>

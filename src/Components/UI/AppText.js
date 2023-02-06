@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text } from "react-native";
+import {THEME} from "../../../Theme";
 
 const AppText = ({ style, children, size = "m" }) => {
   return (
@@ -17,6 +18,7 @@ const AppText = ({ style, children, size = "m" }) => {
 
 const styles = StyleSheet.create({
   default: {
+      color: THEME.textColor,
     fontFamily: "eUkraine",
     textAlign: "center",
   },
