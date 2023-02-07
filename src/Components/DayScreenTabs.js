@@ -1,11 +1,11 @@
-import React, {useEffect, useMemo} from "react";
+import React, { useEffect, useMemo } from "react";
 import { Text, useWindowDimensions } from "react-native";
 import { useSelector } from "react-redux";
 import { Day } from "./Day";
 import { TabBar, TabView } from "react-native-tab-view";
-import { THEME } from "../../Theme";
 import { DayWeekHeaderButtons } from "./DayWeekHeaderButtons";
-import {localisation} from "../localisation/localisation";
+import { localisation } from "../localisation/localisation";
+import { useTheme } from "react-native-paper";
 
 export const DayScreenTabs = ({ navigation }) => {
   useEffect(() => {
@@ -17,6 +17,7 @@ export const DayScreenTabs = ({ navigation }) => {
   const schedule = useSelector((state) => state.schedule.month.currentWeek);
   const lang = useSelector((state) => state.settings.lang);
   const localise = useMemo(() => localisation(lang), [lang]);
+  const theme = useTheme();
 
   const layout = useWindowDimensions();
 
@@ -41,8 +42,8 @@ export const DayScreenTabs = ({ navigation }) => {
       { key: "Friday", title: localise.dayWeek.daysOfWeek.fri },
       { key: "Saturday", title: localise.dayWeek.daysOfWeek.sat },
       { key: "Sunday", title: localise.dayWeek.daysOfWeek.sun },
-    ])
-  }, [lang])
+    ]);
+  }, [lang]);
 
   const renderScene = ({ route }) => {
     switch (route.key) {
@@ -68,10 +69,16 @@ export const DayScreenTabs = ({ navigation }) => {
     <TabBar
       {...props}
       style={{
-        backgroundColor: THEME.headerColor,
+        backgroundColor: theme.colors.headerColor,
       }}
       renderLabel={({ route }) => (
-        <Text style={{ fontSize: 13, fontFamily: "eUkraine" }}>
+        <Text
+          style={{
+            fontSize: 13,
+            fontFamily: "eUkraine",
+            color: theme.colors.headerText,
+          }}
+        >
           {route.title}
         </Text>
       )}
@@ -85,7 +92,7 @@ export const DayScreenTabs = ({ navigation }) => {
       renderTabBar={renderTabBar}
       onIndexChange={setIndex}
       initialLayout={{ width: layout.width }}
-      style={{ backgroundColor: THEME.background }}
+      style={{ backgroundColor: theme.colors.background }}
     />
   );
 };

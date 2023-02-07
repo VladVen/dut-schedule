@@ -1,19 +1,22 @@
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { THEME } from "../../Theme";
+import { container } from "../../Theme";
 import { SelectModal } from "../Components/SelectModal";
 import {
-    getDepartment,
-    getTeacher,
-    saveTeacher, saveTeacherName,
+  getDepartment,
+  getTeacher,
+  saveTeacher,
+  saveTeacherName,
 } from "../../redux/loginTeacherReducer";
 import { CommonActions } from "@react-navigation/native";
 import AppButton from "../Components/UI/AppButton";
 import { localisation } from "../localisation/localisation";
+import { useTheme } from "react-native-paper";
 
 export const TeacherScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const department = useSelector(
     (state) => state.loginTeacher.selectData.department
   );
@@ -42,13 +45,13 @@ export const TeacherScreen = ({ navigation }) => {
 
   if (!department.length)
     return (
-      <View style={styles.container}>
-        <ActivityIndicator color={THEME.textColor} size={"large"} />
+      <View style={container(theme.colors.background)}>
+        <ActivityIndicator color={theme.colors.textColor} size={"large"} />
       </View>
     );
 
   return (
-    <View style={styles.container}>
+    <View style={container(theme.colors.background)}>
       <View style={styles.margin}>
         <AppButton onPress={() => setOpenDep(true)} size={"l"}>
           {selectedDep}
@@ -79,8 +82,8 @@ export const TeacherScreen = ({ navigation }) => {
         visible={openTeacher}
         setVisible={setOpenTeacher}
         setSelected={(name) => {
-            setSelectedTeacher(name)
-            dispatch(saveTeacherName(name))
+          setSelectedTeacher(name);
+          dispatch(saveTeacherName(name));
         }}
         dispatchMethod={async (val) => {
           dispatch(saveTeacher(val));
@@ -101,13 +104,7 @@ export const TeacherScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: THEME.background,
-  },
-  margin: {
-    marginBottom: 20,
-  },
+    margin: {
+        marginBottom: 20,
+    },
 });

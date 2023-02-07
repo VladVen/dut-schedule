@@ -1,10 +1,9 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { AppNavigation } from "./src/Navigation/AppNavigation";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-import { THEME } from "./Theme";
 import { useFonts } from "expo-font";
+import { ThemeProvider } from "./src/Components/ThemeProvider/ThemeProvider";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -14,14 +13,16 @@ export default function App() {
   if (!loaded) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator color={THEME.textColor} size={"large"} />
+        <ActivityIndicator color={store.getState().theme.colors.textColor} size={"large"} />
       </View>
     );
   }
 
+
+
   return (
     <Provider store={store}>
-      <AppNavigation />
+     <ThemeProvider />
     </Provider>
   );
 }
@@ -29,7 +30,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: THEME.background,
+    backgroundColor: store.getState().theme.colors.background,
     alignItems: "center",
     justifyContent: "center",
   },

@@ -1,15 +1,17 @@
 import React, { useCallback, useEffect } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { THEME } from "../../Theme";
+import { container } from "../../Theme";
 import { getSchedule } from "../../redux/scheduleReducer";
 import { DayScreenTabs } from "../Components/DayScreenTabs";
+import { useTheme } from "react-native-paper";
 
 export const DayScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const fetching = useSelector((state) => state.schedule.fetching);
   const group = useSelector((state) => state.login.myData.group);
   const teacher = useSelector((state) => state.loginTeacher.myData.teacher);
+  const theme = useTheme();
 
   const getData = useCallback(async () => {
     if (!group) {
@@ -25,8 +27,8 @@ export const DayScreen = ({ navigation }) => {
 
   if (fetching) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator color={THEME.textColor} size={"large"} />
+      <View style={container(theme.colors.background)}>
+        <ActivityIndicator color={theme.colors.textColor} size={"large"} />
       </View>
     );
   }
@@ -34,11 +36,4 @@ export const DayScreen = ({ navigation }) => {
   return <DayScreenTabs navigation={navigation} />;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: THEME.background,
-  },
-});
+

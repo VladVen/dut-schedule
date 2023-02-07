@@ -1,12 +1,14 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { THEME } from "../../Theme";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Lesson } from "./Lesson";
 import AppText from "./UI/AppText";
+import { useTheme } from "react-native-paper";
 
 export const Day = ({ schedule }) => {
+  const theme = useTheme();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.date}>{schedule.date}</Text>
+      <AppText>{schedule.date}</AppText>
 
       {schedule.info.length > 1 ? (
         <ScrollView>
@@ -19,8 +21,8 @@ export const Day = ({ schedule }) => {
           ))}
         </ScrollView>
       ) : (
-        <View style={styles.freeDay}>
-          <AppText style={{ color: THEME.textColor }}>
+        <View style={{...styles.freeDay, backgroundColor: theme.colors.cardColor}}>
+          <AppText style={{ color: theme.colors.textColor }}>
             Today you are free
           </AppText>
         </View>
@@ -39,12 +41,5 @@ const styles = StyleSheet.create({
     padding: 25,
     margin: 10,
     borderRadius: 10,
-    backgroundColor: "black",
-  },
-  date: {
-    fontFamily: "eUkraine",
-    marginRight: "auto",
-    marginLeft: "auto",
-    color: THEME.textColor,
   },
 });

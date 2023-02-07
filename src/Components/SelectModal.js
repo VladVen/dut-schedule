@@ -1,9 +1,10 @@
 import { Modal, ScrollView, StyleSheet, View } from "react-native";
-import { THEME } from "../../Theme";
-import React, {useMemo} from "react";
+import { container } from "../../Theme";
+import React, { useMemo } from "react";
 import AppButton from "./UI/AppButton";
-import {useSelector} from "react-redux";
-import {localisation} from "../localisation/localisation";
+import { useSelector } from "react-redux";
+import { localisation } from "../localisation/localisation";
+import { useTheme } from "react-native-paper";
 
 export const SelectModal = ({
   visible,
@@ -12,13 +13,13 @@ export const SelectModal = ({
   dispatchMethod,
   setVisible,
 }) => {
-
   const lang = useSelector((state) => state.settings.lang);
   const localise = useMemo(() => localisation(lang), [lang]);
+  const theme = useTheme();
 
   return (
     <Modal visible={visible} animationType={"slide"} transparent={false}>
-      <View style={styles.container}>
+      <View style={{ ...container(theme.colors.background), paddingTop: 30 }}>
         <ScrollView>
           {data.map((item, index) => (
             <View style={styles.margin} key={index}>
@@ -38,7 +39,7 @@ export const SelectModal = ({
         <View style={styles.button}>
           <AppButton
             onPress={() => setVisible(false)}
-            color={THEME.dangerColor}
+            color={theme.colors.dangerColor}
             size={"l"}
           >
             {localise.buttons.goBack}
@@ -50,13 +51,6 @@ export const SelectModal = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: THEME.background,
-    paddingTop: 30,
-  },
   button: {
     marginBottom: 10,
   },

@@ -2,19 +2,22 @@ import { ActivityIndicator, StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    getCourse,
-    getGroup,
-    getInstitute,
-    saveGroup, saveGroupName,
+  getCourse,
+  getGroup,
+  getInstitute,
+  saveGroup,
+  saveGroupName,
 } from "../../redux/loginStudentReducer";
-import { THEME } from "../../Theme";
+import { container } from "../../Theme";
 import { SelectModal } from "../Components/SelectModal";
 import { CommonActions } from "@react-navigation/native";
 import AppButton from "../Components/UI/AppButton";
 import { localisation } from "../localisation/localisation";
+import { useTheme } from "react-native-paper";
 
 export const StudentScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const inst = useSelector((state) => state.login.selectData.inst);
   const course = useSelector((state) => state.login.selectData.course);
   const group = useSelector((state) => state.login.selectData.group);
@@ -44,13 +47,13 @@ export const StudentScreen = ({ navigation }) => {
 
   if (!inst)
     return (
-      <View style={styles.container}>
-        <ActivityIndicator color={THEME.textColor} size={"large"} />
+      <View style={container(theme.colors.background)}>
+        <ActivityIndicator color={theme.colors.textColor} size={"large"} />
       </View>
     );
 
   return (
-    <View style={styles.container}>
+    <View style={container(theme.colors.background)}>
       <View style={styles.margin}>
         <AppButton
           onPress={() => setOpenInst(true)}
@@ -104,7 +107,7 @@ export const StudentScreen = ({ navigation }) => {
         setVisible={setOpenGroup}
         setSelected={(name) => {
           setSelectedGroup(name);
-            dispatch(saveGroupName(name));
+          dispatch(saveGroupName(name));
         }}
         dispatchMethod={(val) => {
           dispatch(saveGroup(val));
@@ -125,12 +128,6 @@ export const StudentScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: THEME.background,
-  },
   margin: {
     marginBottom: 20,
   },

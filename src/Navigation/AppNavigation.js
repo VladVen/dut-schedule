@@ -8,22 +8,26 @@ import { StudentScreen } from "../Screens/StudentScreen";
 import { TeacherScreen } from "../Screens/TeacherScreen";
 import { useSelector } from "react-redux";
 import { DayScreen } from "../Screens/DayScreen";
-import { THEME } from "../../Theme";
 import { SettingsScreen } from "../Screens/SettingsScreen";
 import { useMemo } from "react";
 import { localisation } from "../localisation/localisation";
+import { useTheme } from "react-native-paper";
 
 const SchedNavigator = createNativeStackNavigator();
 const Bottom = createBottomTabNavigator();
 
 function BottomNavigator() {
   const name = useSelector((state) => state.login.myData.groupName);
-  const teacherName = useSelector((state) => state.loginTeacher.myData.teacherName);
+  const teacherName = useSelector(
+    (state) => state.loginTeacher.myData.teacherName
+  );
+
+  const theme = useTheme();
   return (
     <Bottom.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: THEME.headerColor,
+          backgroundColor: theme.colors.headerColor,
           shadowColor: "transparent",
           elevation: 0,
           shadowOffset: {
@@ -31,9 +35,9 @@ function BottomNavigator() {
             height: 0,
           },
         },
-        headerTintColor: "black",
+        headerTintColor: theme.colors.headerText,
         tabBarStyle: {
-          backgroundColor: THEME.headerColor,
+          backgroundColor: theme.colors.headerColor,
           borderTopColor: "transparent",
         },
         tabBarActiveTintColor: "#fff",
@@ -44,7 +48,7 @@ function BottomNavigator() {
         name="Day"
         component={DayScreen}
         options={{
-            headerTitle: name || teacherName.split(' ')[0],
+          headerTitle: name || teacherName?.split(" ")[0],
           tabBarIcon: (info) => (
             <FontAwesome5 name="calendar-day" size={20} color={info.color} />
           ),
@@ -54,7 +58,7 @@ function BottomNavigator() {
         name="Week"
         component={WeekScreen}
         options={{
-          headerTitle: name || teacherName.split(' ')[0],
+          headerTitle: name || teacherName?.split(" ")[0],
           tabBarIcon: (info) => (
             <FontAwesome5 name="calendar-week" size={20} color={info.color} />
           ),
@@ -70,7 +74,7 @@ export const AppNavigation = () => {
 
   const lang = useSelector((state) => state.settings.lang);
   const localise = useMemo(() => localisation(lang), [lang]);
-
+  const theme = useTheme();
   const initialRoute = group || teacher ? "Footer" : "Login";
 
   return (
@@ -79,9 +83,9 @@ export const AppNavigation = () => {
         initialRouteName={initialRoute}
         screenOptions={{
           headerStyle: {
-            backgroundColor: THEME.headerColor,
+            backgroundColor: theme.colors.headerColor,
           },
-          headerTintColor: THEME.headerText,
+          headerTintColor: theme.colors.headerText,
         }}
       >
         <SchedNavigator.Screen
@@ -109,7 +113,7 @@ export const AppNavigation = () => {
           name="Settings"
           component={SettingsScreen}
           options={{
-            headerTintColor: "black",
+            headerTintColor: theme.colors.headerText,
             title: localise.settings.header,
           }}
         />

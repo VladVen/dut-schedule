@@ -6,24 +6,33 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { THEME } from "../../../Theme";
 import AppText from "./AppText";
+import { useTheme } from "react-native-paper";
 
 const AppButton = ({
   children,
   onPress,
-  color = THEME.textColor,
+  color,
   size = "m",
   disabled = false,
 }) => {
   const Wrapper =
     Platform.OS === "android" ? TouchableNativeFeedback : TouchableOpacity;
+
+  const theme = useTheme();
   return (
     <Wrapper onPress={onPress} activeOpacity={0.6} disabled={disabled}>
       <View style={style.default}>
         <AppText
-          style={{ ...style.text, color: disabled ? THEME.disabled : color }}
+          style={{ ...style.text }}
           size={size}
+          color={
+            disabled
+              ? theme.colors.disabledColor
+              : color
+              ? color
+              : theme.colors.textColor
+          }
         >
           {children}
         </AppText>

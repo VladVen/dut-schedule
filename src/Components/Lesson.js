@@ -1,17 +1,19 @@
 import { StyleSheet, Text, View } from "react-native";
-import { THEME } from "../../Theme";
+import { useTheme } from "react-native-paper";
+import AppText from "./UI/AppText";
 
 export const Lesson = ({ lesson, time }) => {
   if (!lesson) {
     return null;
   }
+  const theme = useTheme();
 
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, backgroundColor: theme.colors.cardColor}}>
       <Text
         style={{
           flex: 1,
-          color: THEME.textColor,
+          color: theme.colors.textColor,
           fontSize: 13,
           fontFamily: "eUkraine",
           marginLeft: 5,
@@ -19,18 +21,17 @@ export const Lesson = ({ lesson, time }) => {
       >
         {lesson.slice(0, lesson.length - 27)}
       </Text>
-      <Text
+      <AppText
         style={{
           marginLeft: "auto",
           marginRight: "auto",
           marginBottom: 10,
-          color: THEME.textColor,
-          fontSize: 18,
-          fontFamily: "eUkraine",
+          color: theme.colors.textColor,
         }}
+        size={'l'}
       >
         {time}
-      </Text>
+      </AppText>
     </View>
   );
 };
@@ -42,7 +43,6 @@ const styles = StyleSheet.create({
     height: 200,
     alignItems: "flex-start",
     paddingLeft: 5,
-    backgroundColor: "black",
     shadowRadius: 2,
     shadowOpacity: 0.3,
     shadowOffset: { width: 2, height: 2 },
