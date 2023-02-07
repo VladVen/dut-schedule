@@ -21,6 +21,9 @@ function BottomNavigator() {
   const teacherName = useSelector(
     (state) => state.loginTeacher.myData.teacherName
   );
+    const lang = useSelector((state) => state.settings.lang);
+    const localise = useMemo(() => localisation(lang), [lang]);
+
 
   const theme = useTheme();
   return (
@@ -48,6 +51,7 @@ function BottomNavigator() {
         name="Day"
         component={DayScreen}
         options={{
+            tabBarLabel: localise.dayWeek.day,
           headerTitle: name || teacherName?.split(" ")[0],
           tabBarIcon: (info) => (
             <FontAwesome5 name="calendar-day" size={20} color={info.color} />
@@ -58,7 +62,8 @@ function BottomNavigator() {
         name="Week"
         component={WeekScreen}
         options={{
-          headerTitle: name || teacherName?.split(" ")[0],
+            tabBarLabel: localise.dayWeek.week,
+            headerTitle: name || teacherName?.split(" ")[0],
           tabBarIcon: (info) => (
             <FontAwesome5 name="calendar-week" size={20} color={info.color} />
           ),
