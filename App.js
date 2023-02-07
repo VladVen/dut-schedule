@@ -1,37 +1,36 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import setupStore from "./redux/store";
 import { useFonts } from "expo-font";
 import { ThemeProvider } from "./src/Components/ThemeProvider/ThemeProvider";
+import { PersistGate } from "redux-persist/integration/react";
+import { AppPreloader } from "./src/Components/UI/AppPreloader";
 
 export default function App() {
   const [loaded] = useFonts({
     eUkraine: require("./font/e-Ukraine-Regular.otf"),
   });
 
+  const { store, persistor } = setupStore();
+
   if (!loaded) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator color={store.getState().theme.colors.textColor} size={"large"} />
-      </View>
+      <AppPreloader
+        background={store.getState().theme.colors.background}
+        color={store.getState().theme.colors.textColor}
+      />
     );
   }
 
-
-
   return (
     <Provider store={store}>
-     <ThemeProvider />
+      <PersistGate
+        loading={<AppPreloader background={store.getState().theme.colors.background} color={store.getState().theme.colors.textColor} />}
+        persistor={persistor}
+      >
+        <ThemeProvider />
+      </PersistGate>
     </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: store.getState().theme.colors.background,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

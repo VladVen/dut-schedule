@@ -16,7 +16,6 @@ const initialState = {
     inst: [],
     course: [],
     group: [],
-
   },
   myData: {
     inst: null,

@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Text,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { Text, useWindowDimensions } from "react-native";
 import { useSelector } from "react-redux";
-import { container } from "../../Theme";
 import { TabBar, TabView } from "react-native-tab-view";
 import { Week } from "../Components/Week";
 import { DayWeekHeaderButtons } from "../Components/DayWeekHeaderButtons";
 import { useTheme } from "react-native-paper";
+import { AppPreloader } from "../Components/UI/AppPreloader";
 
 export const WeekScreen = ({ navigation }) => {
   useEffect(() => {
@@ -118,9 +113,10 @@ export const WeekScreen = ({ navigation }) => {
     );
   } else {
     return (
-      <View style={container(theme.colors.background)}>
-        <ActivityIndicator color={theme.colors.textColor} size={"large"} />
-      </View>
+      <AppPreloader
+        background={theme.colors.background}
+        color={theme.colors.textColor}
+      />
     );
   }
 };

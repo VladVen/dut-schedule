@@ -63,5 +63,6 @@ export const localisation = (lang) => {
       logOut: language ? "Logout" : "Вийти",
     },
     schedule: language ? "Schedule" : "Розклад",
+    freeDay: language ? 'Today you are free' : 'На сьогодні ти вільний'
   };
 };

@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,6 +14,7 @@ import { CommonActions } from "@react-navigation/native";
 import AppButton from "../Components/UI/AppButton";
 import { localisation } from "../localisation/localisation";
 import { useTheme } from "react-native-paper";
+import { AppPreloader } from "../Components/UI/AppPreloader";
 
 export const StudentScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -47,9 +48,10 @@ export const StudentScreen = ({ navigation }) => {
 
   if (!inst)
     return (
-      <View style={container(theme.colors.background)}>
-        <ActivityIndicator color={theme.colors.textColor} size={"large"} />
-      </View>
+      <AppPreloader
+        background={theme.colors.background}
+        color={theme.colors.textColor}
+      />
     );
 
   return (

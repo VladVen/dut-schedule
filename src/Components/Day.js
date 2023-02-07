@@ -2,9 +2,15 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { Lesson } from "./Lesson";
 import AppText from "./UI/AppText";
 import { useTheme } from "react-native-paper";
+import {localisation} from "../localisation/localisation";
+import {useSelector} from "react-redux";
 
 export const Day = ({ schedule }) => {
+
+  const lang = useSelector((state) => state.settings.lang);
   const theme = useTheme();
+  const localise = localisation(lang);
+
 
   return (
     <View style={styles.container}>
@@ -23,7 +29,7 @@ export const Day = ({ schedule }) => {
       ) : (
         <View style={{...styles.freeDay, backgroundColor: theme.colors.cardColor}}>
           <AppText style={{ color: theme.colors.textColor }}>
-            Today you are free
+            {localise.freeDay}
           </AppText>
         </View>
       )}
