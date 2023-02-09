@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo } from "react";
 import { Text, useWindowDimensions } from "react-native";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { Day } from "./Day";
 import { TabBar, TabView } from "react-native-tab-view";
 import { DayWeekHeaderButtons } from "./DayWeekHeaderButtons";
 import { localisation } from "../localisation/localisation";
 import { useTheme } from "react-native-paper";
+import {changeTabIndex} from "../../redux/settingsReducer";
 
 export const DayScreenTabs = ({ navigation }) => {
   useEffect(() => {
@@ -14,14 +15,15 @@ export const DayScreenTabs = ({ navigation }) => {
     });
   }, []);
 
+  const dispatch = useDispatch()
   const schedule = useSelector((state) => state.schedule.month.currentWeek);
+  const index = useSelector((state) => state.settings.tabIndex);
   const lang = useSelector((state) => state.settings.lang);
   const localise = useMemo(() => localisation(lang), [lang]);
   const theme = useTheme();
 
   const layout = useWindowDimensions();
 
-  const [index, setIndex] = React.useState(0);
 
   const [routes, setRoutes] = React.useState([
     { key: "Monday", title: localise.dayWeek.daysOfWeek.mon },
@@ -90,7 +92,10 @@ export const DayScreenTabs = ({ navigation }) => {
       navigationState={{ index, routes }}
       renderScene={renderScene}
       renderTabBar={renderTabBar}
-      onIndexChange={setIndex}
+      onIndexChange={(index) => {
+        dispatch(changeTabIndex(index))
+      }
+      }
       initialLayout={{ width: layout.width }}
       style={{ backgroundColor: theme.colors.background }}
     />

@@ -63,6 +63,11 @@ export const localisation = (lang) => {
       logOut: language ? "Logout" : "Вийти",
     },
     schedule: language ? "Schedule" : "Розклад",
-    freeDay: language ? 'Today you are free' : 'На сьогодні ти вільний'
+    freeDay: language ? 'Today you are free' : 'На сьогодні ти вільний',
+    internetAlert: {
+      body: language ? "It seems like you haven't internet connection" : "У вас здається не стабільне інтернет з'єднання",
+      retry: language ? 'Retry' : 'Повторити спробу',
+      cancel: language ? 'Go offline' : 'Оффлайн режим'
+    }
   };
 };
