@@ -8,7 +8,15 @@ export const DarkTHEME: ITheme = {
   dangerColor: "#e53935",
   disabledColor: "#949494",
   headerText: "#000000",
-  cardColor: "rgb(0,0,0)",
+  cardColor: {
+    pz:"rgb(0,0,0)",
+    lk: '#81123c',
+    lb: '#45667e',
+    ekz: '#391949',
+    zal: '#183d18',
+    sem: '#362d36',
+    dop: '#484747',
+  },
 };
 export const LightTHEME: ITheme = {
   background: "rgb(255,255,255)",
@@ -17,8 +25,18 @@ export const LightTHEME: ITheme = {
   dangerColor: "#e53935",
   disabledColor: "#949494",
   headerText: "#ffffff",
-  cardColor: "rgb(153, 191, 87)",
+  cardColor: {
+    pz:"rgb(153, 191, 87)",
+    lk: '#fffadb',
+    lb: '#c4e5ff',
+    ekz: '#b0bcff',
+    zal: '#a7f1a7',
+    sem: '#fff0ff',
+    dop: '#e3ebe4',
+  },
 };
+
+
 
 export const container = (background: string): ViewStyle => {
   return {

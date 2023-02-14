@@ -5,7 +5,7 @@ import { StudentScreen } from "../Screens/StudentScreen";
 import { TeacherScreen } from "../Screens/TeacherScreen";
 import { SettingsScreen } from "../Screens/SettingsScreen";
 import { useMemo } from "react";
-import { localisation } from "../localisation/localisation";
+import { localisation } from "../../localisation/localisation";
 import { RoutesStack, RoutesStackParamList } from "./AppNavigation.types";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { BottomNavigator } from "./BottomNavigation";

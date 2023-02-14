@@ -4,7 +4,7 @@ import { container } from "../../theme/Theme";
 import { SelectModal } from "../Components/SelectModal";
 import { CommonActions } from "@react-navigation/native";
 import AppButton from "../Components/UI/AppButton";
-import { localisation } from "../localisation/localisation";
+import { localisation } from "../../localisation/localisation";
 import { AppPreloader } from "../Components/UI/AppPreloader";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useAppTheme } from "../../hooks/useAppTheme";

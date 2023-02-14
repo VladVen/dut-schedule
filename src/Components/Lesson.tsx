@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import AppText from "./UI/AppText";
 import { useAppTheme } from "../../hooks/useAppTheme";
-import { Sizes } from "../../types/sizes";
-import React from "react";
+import React, { useState } from "react";
 
 interface ILesson {
   lesson: string;
@@ -15,33 +14,49 @@ export const Lesson: React.FC<ILesson> = ({ lesson, time }) => {
   }
   const theme = useAppTheme();
 
+  const [touched, setTouched] = useState(false);
+  const background = () => {
+    if (lesson.includes("[Пз]")) return theme.colors.cardColor.pz;
+    else if (lesson.includes("[Лк]")) return theme.colors.cardColor.lk;
+    else if (lesson.includes("[Лб]")) return theme.colors.cardColor.lb;
+    else if (lesson.includes("[Зач]")) return theme.colors.cardColor.zal;
+    else if (lesson.includes("[Экз]")) return theme.colors.cardColor.ekz;
+    else if (lesson.includes("[Доп]")) return theme.colors.cardColor.dop;
+    else if (lesson.includes("[Сем]")) return theme.colors.cardColor.sem;
+    else {
+      return theme.colors.cardColor.pz;
+    }
+  };
+
+  const lessonSplit = lesson.split(/\n/).filter((item) => item);
+
   return (
-    <View
-      style={{ ...styles.container, backgroundColor: theme.colors.cardColor }}
+    <Pressable
+      style={{
+        ...styles.container,
+        backgroundColor: background(),
+      }}
+      onPress={() => setTouched(prevState => !prevState)}
     >
-      <Text
-        style={{
-          flex: 1,
-          color: theme.colors.textColor,
-          fontSize: 13,
-          fontFamily: "eUkraine",
-          marginLeft: 5,
-        }}
-      >
-        {lesson.slice(0, lesson.length - 27)}
-      </Text>
       <AppText
         style={{
-          marginLeft: "auto",
-          marginRight: "auto",
-          marginBottom: 10,
-          color: theme.colors.textColor,
+          flex: 1,
         }}
-        size={Sizes.large}
       >
-        {time}
+        {touched ? lesson : lessonSplit[0] }
       </AppText>
-    </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 15,
+          justifyContent: 'space-around'
+        }}
+      >
+        {!touched && <AppText >{lessonSplit[2]}</AppText>}
+        <AppText >{time}</AppText>
+      </View>
+    </Pressable>
   );
 };
 
@@ -49,12 +64,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 10,
-    height: 200,
-    alignItems: "flex-start",
     paddingLeft: 5,
-    shadowRadius: 2,
-    shadowOpacity: 0.3,
-    shadowOffset: { width: 2, height: 2 },
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
+    elevation: 8,
+    padding: 10,
     borderRadius: 10,
+
   },
 });

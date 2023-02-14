@@ -2,7 +2,7 @@ import { StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 import AppText from "../Components/UI/AppText";
 import { useMemo, useState } from "react";
 import { SelectModal } from "../Components/SelectModal";
-import { localisation } from "../localisation/localisation";
+import { localisation } from "../../localisation/localisation";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { Sizes } from "../../types/sizes";
