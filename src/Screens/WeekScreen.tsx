@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Text, useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native";
 import { TabBar, TabView } from "react-native-tab-view";
 import { Week } from "../Components/Week";
 import { DayWeekHeaderButtons } from "../Components/DayWeekHeaderButtons";
 import { AppPreloader } from "../Components/UI/AppPreloader";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { useAppSelector } from "../../hooks/redux";
+import AppText from "../Components/UI/AppText";
+import { Sizes } from "../../types/sizes";
 
 export const WeekScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <DayWeekHeaderButtons  />,
+      headerRight: () => <DayWeekHeaderButtons />,
     });
   }, []);
 
@@ -82,8 +84,12 @@ export const WeekScreen = ({ navigation }) => {
         backgroundColor: theme.colors.headerColor,
       }}
       renderLabel={({ route }) => (
-        <Text style={{ fontSize: 11 }}>{route.title}</Text>
+        <AppText color={theme.colors.background} size={Sizes.small}>
+          {route.title}
+        </AppText>
       )}
+      scrollEnabled
+      layout={layout}
     />
   );
 

@@ -1,5 +1,5 @@
 import { Modal, View } from "react-native";
-import { localisation } from "../localisation/localisation";
+import { localisation } from "../../localisation/localisation";
 import { useAppSelector } from "../../hooks/redux";
 import React, { FC } from "react";
 import AppText from "./UI/AppText";

@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useAppSelector } from "../../hooks/redux";
-import { localisation } from "../localisation/localisation";
+import { localisation } from "../../localisation/localisation";
 import { DayScreen } from "../Screens/DayScreen";
 import { WeekScreen } from "../Screens/WeekScreen";
 

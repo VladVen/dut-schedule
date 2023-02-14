@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { container } from "../../theme/Theme";
 import AppButton from "../Components/UI/AppButton";
-import { localisation } from "../localisation/localisation";
+import { localisation } from "../../localisation/localisation";
 import { useAppSelector } from "../../hooks/redux";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { Sizes } from "../../types/sizes";

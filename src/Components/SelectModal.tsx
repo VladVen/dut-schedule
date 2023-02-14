@@ -2,7 +2,7 @@ import { Modal, ScrollView, StyleSheet, View } from "react-native";
 import { container } from "../../theme/Theme";
 import React, { useMemo } from "react";
 import AppButton from "./UI/AppButton";
-import { localisation } from "../localisation/localisation";
+import { localisation } from "../../localisation/localisation";
 import { Sizes } from "../../types/sizes";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { useAppSelector } from "../../hooks/redux";

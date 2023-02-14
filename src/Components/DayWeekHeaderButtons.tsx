@@ -3,7 +3,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import React, { useCallback, useMemo, useState } from "react";
 import { Modal, Pressable, StyleSheet, View } from "react-native";
 import AppButton from "./UI/AppButton";
-import { localisation } from "../localisation/localisation";
+import { localisation } from "../../localisation/localisation";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { fetchSchedule } from "../../store/reducers/schedule/ScheduleThunk";

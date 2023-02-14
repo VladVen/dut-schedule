@@ -1,16 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Text, useWindowDimensions } from "react-native";
+import { useWindowDimensions } from "react-native";
 import { Day } from "./Day";
 import { TabBar, TabView } from "react-native-tab-view";
 import { DayWeekHeaderButtons } from "./DayWeekHeaderButtons";
-import { localisation } from "../localisation/localisation";
+import { localisation } from "../../localisation/localisation";
 import { useAppSelector } from "../../hooks/redux";
 import { useAppTheme } from "../../hooks/useAppTheme";
+import AppText from "./UI/AppText";
+import { Sizes } from "../../types/sizes";
 
 export const DayScreenTabs = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <DayWeekHeaderButtons  />,
+      headerRight: () => <DayWeekHeaderButtons />,
     });
   }, []);
 
@@ -74,16 +76,11 @@ export const DayScreenTabs = ({ navigation }) => {
         backgroundColor: theme.colors.headerColor,
       }}
       renderLabel={({ route }) => (
-        <Text
-          style={{
-            fontSize: 13,
-            fontFamily: "eUkraine",
-            color: theme.colors.headerText,
-          }}
-        >
+        <AppText color={theme.colors.headerText} size={Sizes.small}>
           {route.title}
-        </Text>
+        </AppText>
       )}
+      scrollEnabled
     />
   );
 

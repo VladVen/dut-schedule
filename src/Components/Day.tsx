@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Lesson } from "./Lesson";
 import AppText from "./UI/AppText";
-import { localisation } from "../localisation/localisation";
+import { localisation } from "../../localisation/localisation";
 import { useAppSelector } from "../../hooks/redux";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import React from "react";
@@ -20,24 +20,24 @@ export const Day: React.FC<IDayProps> = ({ schedule }) => {
     <View style={styles.container}>
       <AppText>{schedule.date}</AppText>
 
-      {schedule.info.length > 1 ? (
-        <ScrollView>
-          {schedule.info.map((subj, index) => (
-            <Lesson
-              lesson={`${subj.subject.split("<br>").join("\n")}`}
-              time={subj.time}
-              key={index}
-            />
-          ))}
-        </ScrollView>
+      {schedule.info.length === 1 && !schedule.info[0].subject ? (
+          <View
+              style={{ ...styles.freeDayArea, backgroundColor: theme.colors.cardColor.dop }}
+          >
+            <AppText style={{ color: theme.colors.textColor }}>
+              {localise.freeDay}
+            </AppText>
+          </View>
       ) : (
-        <View
-          style={{ ...styles.freeDayArea, backgroundColor: theme.colors.cardColor }}
-        >
-          <AppText style={{ color: theme.colors.textColor }}>
-            {localise.freeDay}
-          </AppText>
-        </View>
+          <ScrollView>
+            {schedule.info.map((subj, index) => (
+                <Lesson
+                    lesson={`${subj.subject.split("<br>").join("\n")}`}
+                    time={subj.time}
+                    key={index}
+                />
+            ))}
+          </ScrollView>
       )}
     </View>
   );
