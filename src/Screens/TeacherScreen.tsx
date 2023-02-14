@@ -13,6 +13,8 @@ import { selectDepartment } from "../../parser/selectDepartment";
 import { Sizes } from "../../types/sizes";
 import { selectTeacher } from "../../parser/selectTeacher";
 import { LoginSlice } from "../../store/reducers/login/loginSlice";
+import {RoutesStack} from "../Navigation/AppNavigation.types";
+import {InternetAlert} from "../Components/InternetAlert";
 
 export const TeacherScreen = ({ navigation }) => {
   const dispatch = useAppDispatch();
@@ -22,8 +24,10 @@ export const TeacherScreen = ({ navigation }) => {
 
   const [openDep, setOpenDep] = useState(false);
   const [openTeacher, setOpenTeacher] = useState(false);
+    const [error, setError] = useState("");
 
-  const lang = useAppSelector((state) => state.settings.lang);
+
+    const lang = useAppSelector((state) => state.settings.lang);
   const localise = useMemo(() => localisation(lang), [lang]);
 
   const [selectedDep, setSelectedDep] = useState(() => ({
@@ -38,8 +42,12 @@ export const TeacherScreen = ({ navigation }) => {
   const { setLogin } = LoginSlice.actions;
 
   const loadDep = useCallback(async () => {
-    const depart = await selectDepartment("teacher");
-    setDepartment(depart);
+      try {
+          const depart = await selectDepartment("teacher");
+          setDepartment(depart);
+      } catch (e) {
+          setError("Internet Error");
+      }
   }, [selectDepartment]);
 
   useEffect(() => {
@@ -47,9 +55,13 @@ export const TeacherScreen = ({ navigation }) => {
   }, []);
 
   const onDepartmentSelect = async (data: IList) => {
-    setSelectedDep(data);
-    const teachers = await selectTeacher(data.value);
-    setTeachers(teachers);
+      try {
+          setSelectedDep(data);
+          const teachers = await selectTeacher(data.value);
+          setTeachers(teachers);
+      } catch (e) {
+          setError("Internet Error");
+      }
   };
   const onTeacherSelect = async (data: IList) => {
     setSelectedTeacher(data);
@@ -68,12 +80,33 @@ export const TeacherScreen = ({ navigation }) => {
     );
   };
 
+    const onRetry = () => {
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [
+                    {
+                        name: RoutesStack.Login,
+                    },
+                ],
+            })
+        );
+    }
+
   if (!department.length)
     return (
-      <AppPreloader
-        background={theme.colors.background}
-        color={theme.colors.textColor}
-      />
+        <View style={{flex: 1, backgroundColor: theme.colors.background}}>
+            <AppPreloader
+                background={theme.colors.background}
+                color={theme.colors.textColor}
+            />
+            <InternetAlert
+                error={error}
+                onClose={setError}
+                method={onRetry}
+                offlineMode={false}
+            />
+        </View>
     );
 
   return (
@@ -107,6 +140,12 @@ export const TeacherScreen = ({ navigation }) => {
         setVisible={setOpenTeacher}
         dispatchMethod={onTeacherSelect}
       />
+        <InternetAlert
+            error={error}
+            onClose={setError}
+            method={onRetry}
+            offlineMode={false}
+        />
     </View>
   );
 };

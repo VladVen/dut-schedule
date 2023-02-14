@@ -115,12 +115,33 @@ export const StudentScreen = ({
     }
   };
 
+  const onRetry = () => {
+    navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: RoutesStack.Login,
+            },
+          ],
+        })
+    );
+  }
+
   if (!inst.length)
     return (
-      <AppPreloader
-        background={theme.colors.background}
-        color={theme.colors.textColor}
-      />
+        <View style={{flex: 1, backgroundColor: theme.colors.background}}>
+          <AppPreloader
+              background={theme.colors.background}
+              color={theme.colors.textColor}
+          />
+          <InternetAlert
+              error={error}
+              onClose={setError}
+              method={onRetry}
+              offlineMode={false}
+          />
+        </View>
     );
 
   return (
@@ -174,26 +195,12 @@ export const StudentScreen = ({
         setVisible={setOpenGroup}
         dispatchMethod={onGroupSelect}
       />
-
-      {error && (
         <InternetAlert
           error={error}
           onClose={setError}
-          method={() => {
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [
-                  {
-                    name: RoutesStack.Login,
-                  },
-                ],
-              })
-            );
-          }}
+          method={onRetry}
           offlineMode={false}
         />
-      )}
     </View>
   );
 };

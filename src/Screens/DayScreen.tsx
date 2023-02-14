@@ -6,6 +6,7 @@ import { fetchSchedule } from "../../store/reducers/schedule/ScheduleThunk";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { InternetAlert } from "../Components/InternetAlert";
 import {ScheduleSlice} from "../../store/reducers/schedule/scheduleSlice";
+import {View} from "react-native";
 
 export const DayScreen = ({ navigation }) => {
   const dispatch = useAppDispatch();
@@ -42,16 +43,19 @@ export const DayScreen = ({ navigation }) => {
   return (
     <>
       {error ? (
-        <InternetAlert
-          error={errorModal}
-          onClose={setErrorModal}
-          method={() => {
-            getData()
-          }}
-          onDismiss={() => {
-            dispatch(removeError())
-          }}
-        />
+          <View style={{flex: 1, backgroundColor: theme.colors.background}}>
+            <InternetAlert
+                error={errorModal}
+                onClose={setErrorModal}
+                method={() => {
+                  getData()
+                }}
+                onDismiss={() => {
+                  dispatch(removeError())
+                }}
+            />
+          </View>
+
       ) : (
         <DayScreenTabs navigation={navigation} />
       )}
