@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  version: 1.2
+  version: 1.3
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
