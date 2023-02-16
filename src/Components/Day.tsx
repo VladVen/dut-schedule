@@ -16,11 +16,13 @@ export const Day: React.FC<IDayProps> = ({ schedule }) => {
   const theme = useAppTheme();
   const localise = localisation(lang);
 
+  const noLessons = (schedule.info.length === 1 && !schedule.info[0].subject) ||  !schedule.info.length
+
   return (
     <View style={styles.container}>
       <AppText>{schedule.date}</AppText>
 
-      {schedule.info.length === 1 && !schedule.info[0].subject ? (
+      {noLessons ? (
           <View
               style={{ ...styles.freeDayArea, backgroundColor: theme.colors.cardColor.dop }}
           >

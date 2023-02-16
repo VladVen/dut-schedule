@@ -30,10 +30,12 @@ export const DayWeekHeaderButtons = () => {
   const navigation = useNavigation<NavigationProp<RoutesStackParamList>>();
 
   const { resetLogin } = LoginSlice.actions;
-  const { resetSchedule } = ScheduleSlice.actions;
+  const {resetSchedule, setDate } = ScheduleSlice.actions;
+
 
   const getData = useCallback(async () => {
     await dispatch(fetchSchedule({ id, category }));
+    dispatch(setDate(new Date()))
   }, [fetchSchedule]);
 
   const onLogout = () => {

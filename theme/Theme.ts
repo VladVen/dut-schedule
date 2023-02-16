@@ -3,15 +3,15 @@ import { ViewStyle } from "react-native";
 
 export const DarkTHEME: ITheme = {
   background: "rgb(42,42,42)",
-  textColor: "rgb(153, 191, 87)",
+  textColor: "#99BF57",
   headerColor: "rgb(2, 139, 124)",
   dangerColor: "#e53935",
   disabledColor: "#949494",
   headerText: "#000000",
   cardColor: {
-    pz:"rgb(0,0,0)",
-    lk: '#81123c',
-    lb: '#45667e',
+    pz:"#562d28",
+    lk: '#3a1d00',
+    lb: '#273746',
     ekz: '#391949',
     zal: '#183d18',
     sem: '#362d36',

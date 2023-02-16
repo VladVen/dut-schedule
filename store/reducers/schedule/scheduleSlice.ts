@@ -14,6 +14,7 @@ interface IState {
   thirdWeek: IWeek;
   fetching: boolean;
   error: string;
+  lastUpdate: Date;
 }
 
 const initialState: IState = {
@@ -23,6 +24,7 @@ const initialState: IState = {
   thirdWeek: [],
   fetching: true,
   error: "",
+  lastUpdate: null,
 };
 
 export const ScheduleSlice = createSlice({
@@ -41,11 +43,13 @@ export const ScheduleSlice = createSlice({
     setThirdWeek(state, action: PayloadAction<IWeek>) {
       state.thirdWeek = action.payload;
     },
-    removeError(state) {
-      state.error = '';
+    setDate(state, action: PayloadAction<Date>) {
+      state.lastUpdate = action.payload;
     },
-      resetSchedule: () => initialState,
-
+    removeError(state) {
+      state.error = "";
+    },
+    resetSchedule: () => initialState,
   },
   extraReducers: (builder) =>
     builder
